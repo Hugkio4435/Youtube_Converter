@@ -1,0 +1,162 @@
+import sys
+import re
+import yt_dlp
+from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, 
+                             QVBoxLayout, QLineEdit, QComboBox, 
+                             QPushButton, QProgressBar, QLabel, QMessageBox)
+from PyQt6.QtCore import Qt, QThread, pyqtSignal
+
+# 1. A Lógica de Download em Background (Thread)
+class DownloadThread(QThread):
+    progress_signal = pyqtSignal(int)
+    finished_signal = pyqtSignal(str)
+    error_signal = pyqtSignal(str)
+
+    def __init__(self, url, formato):
+        super().__init__()
+        self.url = url
+        self.formato = formato
+
+    def run(self):
+        try:
+            # Opções base do yt-dlp
+            ydl_opts = {
+                'progress_hooks': [self.hook_progresso],
+                'outtmpl': '%(title)s.%(ext)s', # Nome do ficheiro igual ao título do vídeo
+                'quiet': True,
+                'nocolor': True,
+                'noplaylist': True  # A CORREÇÃO: Ignora playlists e foca só no vídeo
+            }
+
+            # Configurar a qualidade consoante a escolha do utilizador
+            if self.formato == "MP3 (Áudio)":
+                ydl_opts.update({
+                    'format': 'bestaudio/best',
+                    'postprocessors': [{
+                        'key': 'FFmpegExtractAudio',
+                        'preferredcodec': 'mp3',
+                        'preferredquality': '192', # Qualidade de bitrate muito boa
+                    }],
+                })
+            else:
+                ydl_opts.update({
+                    'format': 'bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best',
+                })
+
+            # Iniciar o download
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download([self.url])
+            
+            self.finished_signal.emit("Download concluído com sucesso!")
+        
+        except Exception as e:
+            self.error_signal.emit(f"Erro no yt-dlp: {str(e)}")
+
+    # Função para ler o progresso e enviar para a interface
+    def hook_progresso(self, d):
+        if d['status'] == 'downloading':
+            p_str = d.get('_percent_str', '0%')
+            # Limpar formatações de texto do terminal para obter um número limpo
+            p_str = re.sub(r'\x1b\[[0-9;]*m', '', p_str) 
+            p_str = p_str.replace('%', '').strip()
+            try:
+                percentagem = int(float(p_str))
+                self.progress_signal.emit(percentagem)
+            except ValueError:
+                pass
+
+
+# 2. A Interface Gráfica
+class ConversorApp(QMainWindow):
+    def __init__(self):
+        super().__init__()
+        
+        self.setWindowTitle("Conversor YT Premium")
+        self.setFixedSize(450, 250)
+        
+        widget_central = QWidget()
+        layout = QVBoxLayout()
+        layout.setSpacing(15)
+        layout.setContentsMargins(20, 20, 20, 20)
+        
+        self.label_url = QLabel("Link do Vídeo:")
+        self.input_url = QLineEdit()
+        self.input_url.setPlaceholderText("https://www.youtube.com/...")
+        
+        self.label_formato = QLabel("Formato de Saída:")
+        self.combo_formato = QComboBox()
+        self.combo_formato.addItems(["MP3 (Áudio)", "MP4 (Vídeo)"])
+        
+        self.progress_bar = QProgressBar()
+        self.progress_bar.setValue(0)
+        self.progress_bar.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        self.btn_download = QPushButton("Iniciar Download")
+        self.btn_download.setMinimumHeight(40)
+        
+        # Conectar o clique do botão à função de iniciar
+        self.btn_download.clicked.connect(self.iniciar_download)
+        
+        layout.addWidget(self.label_url)
+        layout.addWidget(self.input_url)
+        layout.addWidget(self.label_formato)
+        layout.addWidget(self.combo_formato)
+        layout.addWidget(self.progress_bar)
+        layout.addWidget(self.btn_download)
+        
+        widget_central.setLayout(layout)
+        self.setCentralWidget(widget_central)
+
+    # 3. Gestão dos Eventos da Interface
+    def iniciar_download(self):
+        url = self.input_url.text().strip()
+        if not url:
+            QMessageBox.warning(self, "Aviso", "Por favor, insere um link válido!")
+            return
+            
+        formato = self.combo_formato.currentText()
+        
+        # Bloquear a UI para evitar duplo clique
+        self.btn_download.setEnabled(False)
+        self.btn_download.setText("A transferir e a converter...")
+        self.progress_bar.setValue(0)
+        
+        # Lançar a Thread
+        self.thread = DownloadThread(url, formato)
+        self.thread.progress_signal.connect(self.atualizar_barra)
+        self.thread.finished_signal.connect(self.download_concluido)
+        self.thread.error_signal.connect(self.download_erro)
+        self.thread.start()
+
+    def atualizar_barra(self, valor):
+        self.progress_bar.setValue(valor)
+
+    def download_concluido(self, msg):
+        self.progress_bar.setValue(100)
+        QMessageBox.information(self, "Sucesso", msg)
+        self.reset_ui()
+
+    def download_erro(self, msg):
+        QMessageBox.critical(self, "Erro", msg)
+        self.reset_ui()
+        
+    def reset_ui(self):
+        self.btn_download.setEnabled(True)
+        self.btn_download.setText("Iniciar Download")
+        self.progress_bar.setValue(0)
+        self.input_url.clear()
+
+if __name__ == "__main__":
+    app = QApplication(sys.argv)
+    
+    app.setStyleSheet("""
+        QMainWindow { background-color: #f0f0f0; }
+        QPushButton { background-color: #0078D7; color: white; border-radius: 5px; font-weight: bold; }
+        QPushButton:hover { background-color: #005A9E; }
+        QPushButton:disabled { background-color: #a0a0a0; }
+        QLineEdit, QComboBox { padding: 5px; border: 1px solid #ccc; border-radius: 3px; }
+    """)
+    
+    janela = ConversorApp()
+    janela.show()
+    sys.exit(app.exec())
