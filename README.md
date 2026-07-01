@@ -6,11 +6,11 @@ O **YT Premium Converter** é uma aplicação desktop moderna e leve para descar
 
 ## ✨ Funcionalidades Principais
 
-* **🎵 Extração de Áudio (MP3):** Descarrega músicas com seleção de qualidade ajustável (320 kbps, 192 kbps ou 128 kbps).
-* **🎥 Downloads de Vídeo em Alta Resolução (MP4):** Suporte total desde 480p até resoluções ultra-nítidas como **2K** e **4K (2160p)**.
-* **🛡️ Sistema Anti-Bloqueio (Smart Fallback):** Execução otimizada que contorna restrições de "bot" do YouTube, extraindo cookies de sessão de vários navegadores (Firefox, Chrome, Edge, Brave, Opera) de forma totalmente invisível.
-* **📂 Escolha de Destino:** Permite selecionar facilmente em que pasta do computador o ficheiro final será guardado.
-* **🎨 Interface Moderna (Dark Mode):** Visual escuro de alto contraste inspirado nas ferramentas de desenvolvimento modernas, otimizado para não cansar a vista.
+*  Extração de Áudio (MP3):** Descarrega músicas com seleção de qualidade ajustável (320 kbps, 192 kbps ou 128 kbps).
+*  Downloads de Vídeo em Alta Resolução (MP4):** Suporte total desde 480p até resoluções ultra-nítidas como **2K** e **4K (2160p)**.
+*  Sistema Anti-Bloqueio (Smart Fallback):** Execução otimizada que contorna restrições de "bot" do YouTube, extraindo cookies de sessão de vários navegadores (Firefox, Chrome, Edge, Brave, Opera) de forma totalmente invisível.
+*  Escolha de Destino:** Permite selecionar facilmente em que pasta do computador o ficheiro final será guardado.
+*  Interface Moderna (Dark Mode):** Visual escuro de alto contraste inspirado nas ferramentas de desenvolvimento modernas, otimizado para não cansar a vista.
 
 ---
 
