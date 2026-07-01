@@ -3,6 +3,8 @@ import os
 import re
 import subprocess
 import yt_dlp
+import multiprocessing # <--- IMPORTANTE PARA O PYINSTALLER NÃO REBENTAR
+
 from PyQt6.QtWidgets import (QApplication, QMainWindow, QWidget, 
                              QVBoxLayout, QHBoxLayout, QLineEdit, QComboBox, 
                              QPushButton, QProgressBar, QLabel, QMessageBox,
@@ -16,18 +18,15 @@ class UpdaterThread(QThread):
 
     def run(self):
         try:
-            # Invoca o pip para atualizar o yt-dlp silenciosamente
             subprocess.check_call(
                 [sys.executable, "-m", "pip", "install", "--upgrade", "yt-dlp", "--quiet"],
                 stdout=subprocess.DEVNULL,
                 stderr=subprocess.DEVNULL
             )
         except Exception:
-            # Se falhar (ex: sem internet), simplesmente ignora e avança
             pass
         finally:
             self.finished_signal.emit()
-
 
 # 2. Background Download Logic (Com Fallback Inteligente)
 class DownloadThread(QThread):
@@ -79,7 +78,7 @@ class DownloadThread(QThread):
             sucesso = False
             erro_final = ""
 
-            # 1ª Tentativa: Sem cookies (Funciona para 90% dos vídeos)
+            # 1ª Tentativa: Sem cookies
             try:
                 with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                     ydl.download([self.url])
@@ -88,10 +87,8 @@ class DownloadThread(QThread):
             except Exception as e:
                 erro_atual = str(e)
                 
-                # Se o erro for bloqueio do YouTube, ativamos o Fallback
+                # Fallback: Se o YouTube bloquear, tenta usar cookies do browser
                 if "Sign in" in erro_atual or "bot" in erro_atual.lower() or "confirm" in erro_atual.lower():
-                    
-                    # Firefox em primeiro, pois ignora a encriptação pesada do Chrome no Windows
                     browsers_para_testar = ['firefox', 'chrome', 'edge', 'brave', 'opera']
                     
                     for browser in browsers_para_testar:
@@ -100,15 +97,13 @@ class DownloadThread(QThread):
                             with yt_dlp.YoutubeDL(ydl_opts) as ydl:
                                 ydl.download([self.url])
                             sucesso = True
-                            break # Se conseguiu descarregar, sai do loop imediatamente
+                            break
                         except Exception:
-                            # Ignora erros de base de dados bloqueada e tenta o próximo browser
                             continue
                             
                     if not sucesso:
                         erro_final = "YouTube is blocking the download.\nTip: Close your main browser completely and try again, or install Firefox."
                 else:
-                    # Outro erro qualquer (ex: link inválido)
                     erro_final = erro_atual
 
             if sucesso:
@@ -186,7 +181,6 @@ class ConversorApp(QMainWindow):
         self.btn_download.setProperty("class", "btn-primary")
         self.btn_download.clicked.connect(self.iniciar_download)
         
-        # Building the Layout
         layout.addWidget(self.label_url)
         layout.addWidget(self.input_url)
         layout.addWidget(self.label_destino)
@@ -202,12 +196,15 @@ class ConversorApp(QMainWindow):
         widget_central.setLayout(layout)
         self.setCentralWidget(widget_central)
 
-        # Disparar Atualização Automática ao Iniciar
-        self.btn_download.setEnabled(False)
-        self.btn_download.setText("CHECKING FOR UPDATES...")
-        self.updater_thread = UpdaterThread()
-        self.updater_thread.finished_signal.connect(self.update_concluido)
-        self.updater_thread.start()
+        # PROTEÇÃO PARA O PYINSTALLER: Ignora o update automático se for compilado
+        if getattr(sys, 'frozen', False):
+            pass # Estamos a correr como .exe, por isso não tentamos atualizar
+        else:
+            self.btn_download.setEnabled(False)
+            self.btn_download.setText("CHECKING FOR UPDATES...")
+            self.updater_thread = UpdaterThread()
+            self.updater_thread.finished_signal.connect(self.update_concluido)
+            self.updater_thread.start()
 
     # 4. Event Management
     def update_concluido(self):
@@ -266,6 +263,9 @@ class ConversorApp(QMainWindow):
 
 
 if __name__ == "__main__":
+    # PROTEÇÃO PARA O PYINSTALLER: Impede o yt-dlp de multiplicar processos infinitamente
+    multiprocessing.freeze_support() 
+    
     app = QApplication(sys.argv)
     
     fonte_base = QFont("Segoe UI", 10)
@@ -273,17 +273,9 @@ if __name__ == "__main__":
     
     # QSS Styling Magic
     app.setStyleSheet("""
-        QMainWindow { 
-            background-color: #1E1E2E; 
-        }
+        QMainWindow { background-color: #1E1E2E; }
+        QLabel { color: #E2E2E2; font-weight: bold; font-size: 13px; }
         
-        QLabel { 
-            color: #E2E2E2; 
-            font-weight: bold; 
-            font-size: 13px;
-        }
-        
-        /* Fixed text inputs with White text */
         QLineEdit, QComboBox { 
             background-color: #2D2D3F; 
             color: #FFFFFF; 
@@ -295,17 +287,13 @@ if __name__ == "__main__":
             font-weight: bold; 
         }
         
-        /* Maintain white text on focus */
         QLineEdit:focus, QComboBox:focus { 
             border: 2px solid #00E5FF; 
             background-color: #35354A;
             color: #FFFFFF; 
         }
         
-        QLineEdit::placeholder {
-            color: #888899;
-            font-weight: normal;
-        }
+        QLineEdit::placeholder { color: #888899; font-weight: normal; }
         
         QComboBox QAbstractItemView {
             background-color: #2D2D3F;
@@ -323,13 +311,8 @@ if __name__ == "__main__":
             letter-spacing: 1px;
             min-height: 45px;
         }
-        QPushButton[class="btn-primary"]:hover { 
-            background-color: #33EEFF; 
-        }
-        QPushButton[class="btn-primary"]:disabled { 
-            background-color: #3E3E55; 
-            color: #888899; 
-        }
+        QPushButton[class="btn-primary"]:hover { background-color: #33EEFF; }
+        QPushButton[class="btn-primary"]:disabled { background-color: #3E3E55; color: #888899; }
         
         QPushButton[class="btn-secondary"] { 
             background-color: #3E3E55; 
@@ -339,9 +322,7 @@ if __name__ == "__main__":
             padding: 6px 6px;
             min-height: 20px; 
         }
-        QPushButton[class="btn-secondary"]:hover { 
-            background-color: #4A4A65; 
-        }
+        QPushButton[class="btn-secondary"]:hover { background-color: #4A4A65; }
         
         QProgressBar {
             border: 2px solid #3E3E55;
@@ -352,28 +333,14 @@ if __name__ == "__main__":
             background-color: #2D2D3F;
             min-height: 25px;
         }
-        QProgressBar::chunk {
-            background-color: #00E5FF;
-            border-radius: 4px;
-        }
+        QProgressBar::chunk { background-color: #00E5FF; border-radius: 4px; }
         
-        QMessageBox {
-            background-color: #1E1E2E;
-        }
-        QMessageBox QLabel {
-            color: #FFFFFF;
-            font-weight: normal;
-        }
+        QMessageBox { background-color: #1E1E2E; }
+        QMessageBox QLabel { color: #FFFFFF; font-weight: normal; }
         QMessageBox QPushButton {
-            background-color: #3E3E55;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 4px;
+            background-color: #3E3E55; color: white; padding: 5px 15px; border-radius: 4px;
         }
-        QMessageBox QPushButton:hover {
-            background-color: #00E5FF;
-            color: #1E1E2E;
-        }
+        QMessageBox QPushButton:hover { background-color: #00E5FF; color: #1E1E2E; }
     """)
     
     janela = ConversorApp()
