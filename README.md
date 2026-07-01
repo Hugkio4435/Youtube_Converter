@@ -49,6 +49,6 @@ Se pretendes executar ou modificar o código manualmente, vais precisar de:
 ```bash
    py -m PyInstaller --noconsole --onefile --name "Conversor YT Premium" --icon="logo.ico" main.py
 
-##  O ficheiro final compilado estará disponível dentro da pasta autogerada dist/.
+# O ficheiro final compilado estará disponível dentro da pasta autogerada dist/.
 
 
