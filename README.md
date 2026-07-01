@@ -35,17 +35,6 @@ Se pretendes executar ou modificar o código manualmente, vais precisar de:
    git clone [https://github.com/o-teu-utilizador/yt-premium-converter.git](https://github.com/o-teu-utilizador/yt-premium-converter.git)
    cd yt-premium-converter
 
-
-
-   Instale as dependências necessárias através do gestor de pacotes do Python:
-
-Bash
-pip install -r requirements.txt
-Execute a aplicação:
-
-Bash
-python main.py
-📦 Como Gerar o Executável (.exe)
 Caso queiras compilar o teu próprio executável a partir do código, podes utilizar o PyInstaller. Com o terminal aberto na pasta do projeto, executa o seguinte comando:
 
 Bash
