@@ -32,7 +32,7 @@ Se pretendes executar ou modificar o código manualmente, vais precisar de:
 
 1. Clone este repositório para o teu computador:
    ```bash
-   git clone [https://github.com/o-teu-utilizador/yt-premium-converter.git](https://github.com/o-teu-utilizador/yt-premium-converter.git)
+   git clone [https://github.com/Hugkio4435/yt-premium-converter.git](https://github.com/o-teu-utilizador/yt-premium-converter.git)
    cd yt-premium-converter
 
 Caso queiras compilar o teu próprio executável a partir do código, podes utilizar o PyInstaller. Com o terminal aberto na pasta do projeto, executa o seguinte comando:
