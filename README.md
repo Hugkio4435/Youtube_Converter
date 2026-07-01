@@ -35,7 +35,19 @@ Se pretendes executar ou modificar o código manualmente, vais precisar de:
    git clone [https://github.com/Hugkio4435/Youtube_Converter.git](https://github.com/Hugkio4435/Youtube_Converter.git)
    cd yt-premium-converter
 
-Caso queiras compilar o teu próprio executável a partir do código, podes utilizar o PyInstaller. Com o terminal aberto na pasta do projeto, executa o seguinte comando:
 
-Bash
-py -m PyInstaller --noconsole --onefile --name "Conversor YT Premium" --icon="logo.ico" main.py
+2. Instale as dependências necessárias através do gestor de pacotes do Python:
+   ```bash
+   pip install -r requirements.txt
+
+   
+3. Execute a aplicação:
+   ```bash
+   python main.py
+
+##  Como Gerar o Executável (.exe)
+```bash
+   py -m PyInstaller --noconsole --onefile --name "Conversor YT Premium" --icon="logo.ico" main.py
+
+
+
