@@ -1,17 +1,17 @@
-# YT Premium Converter 🚀
+# YT Premium Converter 
 
 O **YT Premium Converter** é uma aplicação desktop moderna e leve para descarregar e converter vídeos ou áudios do YouTube. Construída em Python com a biblioteca **PyQt6** para a interface gráfica e alimentada pelo **yt-dlp**, a ferramenta oferece um design focado na facilidade de utilização, alto contraste visual e alta performance.
 
 ---
 
-## ✨ Funcionalidades Principais
+## Funcionalidades Principais
 
-* **🎵 Extração de Áudio (MP3):** Descarrega músicas com seleção de qualidade ajustável (320 kbps, 192 kbps ou 128 kbps).
-* **🎥 Downloads de Vídeo em Alta Resolução (MP4):** Suporte total desde 480p até resoluções ultra-nítidas como **2K** e **4K (2160p)**.
-* **🛡️ Sistema Anti-Bloqueio (Smart Fallback):** Execução otimizada que contorna restrições de "bot" do YouTube, extraindo cookies de sessão de vários navegadores (Firefox, Chrome, Edge, Brave, Opera) de forma totalmente invisível.
-* **🎬 Modo Vídeo Único:** Ignora automaticamente playlists gigantes, focando apenas no vídeo exato correspondente ao link colado.
-* **📂 Escolha de Destino:** Permite selecionar facilmente em que pasta do computador o ficheiro final será guardado.
-* **🎨 Interface Moderna (Dark Mode):** Visual escuro de alto contraste inspirado nas ferramentas de desenvolvimento modernas, otimizado para não cansar a vista.
+* ** Extração de Áudio (MP3):** Descarrega músicas com seleção de qualidade ajustável (320 kbps, 192 kbps ou 128 kbps).
+* ** Downloads de Vídeo em Alta Resolução (MP4):** Suporte total desde 480p até resoluções ultra-nítidas como **2K** e **4K (2160p)**.
+* ** Sistema Anti-Bloqueio (Smart Fallback):** Execução otimizada que contorna restrições de "bot" do YouTube, extraindo cookies de sessão de vários navegadores (Firefox, Chrome, Edge, Brave, Opera) de forma totalmente invisível.
+* ** Modo Vídeo Único:** Ignora automaticamente playlists gigantes, focando apenas no vídeo exato correspondente ao link colado.
+* ** Escolha de Destino:** Permite selecionar facilmente em que pasta do computador o ficheiro final será guardado.
+* ** Interface Moderna (Dark Mode):** Visual escuro de alto contraste inspirado nas ferramentas de desenvolvimento modernas, otimizado para não cansar a vista.
 
 ---
 
@@ -29,7 +29,7 @@ Se pretendes executar ou modificar o código manualmente, vais precisar de:
 
 ---
 
-## 🚀 Como Executar o Código-Fonte
+##  Como Executar o Código-Fonte
 
 1. Clone este repositório para o teu computador:
    ```bash
