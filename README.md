@@ -5,10 +5,15 @@ A lightweight, local desktop application for downloading and converting YouTube 
 ---
 
 ✨ # Features
+
 🎬 Video (MP4) or 🎵 Audio (MP3) downloads from a single YouTube link
+
 🎚️ Adjustable video quality (up to 4K) and audio bitrate (up to 320 kbps)
+
 🌙 Custom dark-mode interface
+
 📂 Choose your own destination folder
+
 📊 Live progress bar during download
 🔄 One-click yt-dlp updater built into the app — no need to open a terminal when YouTube changes break older versions
 🚫 Single-video downloads only (playlists are never downloaded by accident)
