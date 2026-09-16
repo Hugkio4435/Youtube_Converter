@@ -1,4 +1,4 @@
-# YT Premium Converter 🚀
+# YT Converter
 
 O **YT Premium Converter** é uma aplicação desktop moderna e leve para descarregar e converter vídeos ou áudios do YouTube. Construída em Python com a biblioteca **PyQt6** para a interface gráfica e alimentada pelo **yt-dlp**, a ferramenta oferece um design focado na facilidade de utilização, alto contraste visual e alta performance.
 
