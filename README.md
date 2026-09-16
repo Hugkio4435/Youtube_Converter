@@ -21,6 +21,7 @@ A lightweight, local desktop application for downloading and converting YouTube 
 🚫 Single-video downloads only (playlists are never downloaded by accident)
 
 📦 Packaged as a standalone .exe — no Python installation required to run it
+
 ---
 
 ## 🛠️ Requisitos e Pré-requisitos
