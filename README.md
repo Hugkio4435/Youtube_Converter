@@ -5,7 +5,6 @@ A lightweight, local desktop application for downloading and converting YouTube 
 
 ![Platform](https://img.shields.io/badge/platform-Windows-blue)
 ![Python](https://img.shields.io/badge/python-3.13-yellow)
-![License](https://img.shields.io/badge/license-MIT-green)
 
 ---
 
@@ -93,7 +92,3 @@ The compiled executable will be created inside the generated `dist/` folder.
 This tool is intended for **personal, local use only** (e.g. archiving your own content or downloading material you have the rights to). Downloading copyrighted content from YouTube may violate YouTube's [Terms of Service](https://www.youtube.com/t/terms). Use responsibly and at your own risk.
 
 ---
-
-## 📄 License
-
-This project is licensed under the [MIT License](LICENSE).
