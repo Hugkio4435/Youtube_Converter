@@ -22,11 +22,6 @@ A lightweight, local desktop application for downloading and converting YouTube 
 
 ---
 
-## 🖼️ Preview
-
-![Uploading image.png…]()
-
----
 
 ## 🛠️ Built With
 
