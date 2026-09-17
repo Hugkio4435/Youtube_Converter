@@ -51,7 +51,7 @@ A lightweight, local desktop application for downloading and converting YouTube 
 
 ```bash
 # Clone the repository
-git clone https://github.com/YOUR-USERNAME/youtube-converter.git
+git clone https://github.com/Hugkio4435/Youtube_Converter.git
 cd youtube-converter
 
 # Install dependencies
