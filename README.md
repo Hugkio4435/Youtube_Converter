@@ -24,7 +24,7 @@ A lightweight, local desktop application for downloading and converting YouTube 
 
 ## 🖼️ Preview
 
-*(Add a screenshot of the app here — drag an image into this section on GitHub or replace this line with `![App Screenshot](assets/screenshot.png)`)*
+![Uploading image.png…]()
 
 ---
 
