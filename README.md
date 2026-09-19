@@ -80,7 +80,7 @@ To package the app into a standalone `.exe` yourself:
 
 ```bash
 pip install pyinstaller
-python -m PyInstaller --onefile --windowed --name ConversorYouTube youtube_downloader.py
+python -m PyInstaller --onefile --windowed --name YoutubeConverter youtubeconverter.py
 ```
 
 The compiled executable will be created inside the generated `dist/` folder.
