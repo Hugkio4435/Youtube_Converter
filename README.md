@@ -57,7 +57,7 @@ cd youtube-converter
 pip install yt-dlp
 
 # Run the app
-python youtube_downloader.py
+python main.py
 ```
 
 ---
